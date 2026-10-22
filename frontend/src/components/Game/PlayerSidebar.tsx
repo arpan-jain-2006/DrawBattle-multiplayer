@@ -1,7 +1,7 @@
 import React from 'react';
 import { Player } from '../../types/game';
 import { AvatarRenderer } from '../Avatar/AvatarRenderer';
-import { Crown, Pen, CheckCircle2 } from 'lucide-react';
+import { Crown, Pen, CheckCircle2, Sparkles } from 'lucide-react';
 
 interface PlayerSidebarProps {
   players: Player[];
@@ -174,6 +174,29 @@ export const PlayerSidebar: React.FC<PlayerSidebarProps> = ({
             </div>
           );
         })}
+      </div>
+
+      {/* Sleek Bottom Widget (Eliminates dead empty void when few players) */}
+      <div
+        style={{
+          marginTop: 'auto',
+          padding: '12px 14px',
+          background: 'rgba(0, 0, 0, 0.25)',
+          borderTop: '1px solid var(--border-subtle)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', fontWeight: 800, color: 'var(--accent-yellow)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          <Sparkles size={13} color="var(--accent-yellow)" />
+          <span>PRO TIP</span>
+        </div>
+        <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: '1.35', margin: 0 }}>
+          {phase === 'DRAWING'
+            ? '⚡ Faster guesses score up to 500 bonus points!'
+            : '🎨 Get ready to sketch or guess in the next round!'}
+        </p>
       </div>
     </div>
   );

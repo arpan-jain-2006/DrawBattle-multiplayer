@@ -54,15 +54,16 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
-            background: isTimeCritical ? 'var(--accent-coral)' : 'var(--bg-surface)',
+            background: isTimeCritical ? 'var(--accent-coral)' : 'rgba(255, 209, 59, 0.12)',
             color: isTimeCritical ? '#ffffff' : 'var(--accent-yellow)',
-            padding: '6px 12px',
+            padding: '6px 14px',
             borderRadius: 'var(--radius-full)',
-            border: isTimeCritical ? '2px solid #fda4af' : '1px solid var(--border-light)',
+            border: isTimeCritical ? '2px solid #fda4af' : '1.5px solid rgba(255, 209, 59, 0.4)',
             fontWeight: 800,
             fontSize: '1.05rem',
             justifyContent: 'center',
             transition: 'all 0.2s ease',
+            boxShadow: isTimeCritical ? '0 0 12px rgba(244, 63, 94, 0.6)' : '0 2px 6px rgba(0,0,0,0.2)',
           }}
         >
           <Clock size={17} />
@@ -73,16 +74,16 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
         <div
           style={{
             background: 'var(--bg-surface)',
-            padding: '5px 10px',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--border-subtle)',
+            padding: '6px 12px',
+            borderRadius: 'var(--radius-full)',
+            border: '1px solid var(--border-light)',
             fontSize: '0.85rem',
             fontWeight: 700,
             color: 'var(--text-muted)',
             whiteSpace: 'nowrap',
           }}
         >
-          Round <strong style={{ color: 'var(--text-main)' }}>{round}</strong>/{totalRounds}
+          Round <strong style={{ color: 'var(--text-main)' }}>{round}</strong> / {totalRounds}
         </div>
       </div>
 
@@ -90,10 +91,18 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
       <div className="header-section-center">
         {isDrawer && drawerWord ? (
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--accent-yellow)', letterSpacing: '1px', fontWeight: 700 }}>
-              YOUR WORD
+            <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--accent-yellow)', letterSpacing: '1.5px', fontWeight: 800 }}>
+              ✏️ YOUR WORD TO DRAW
             </div>
-            <div style={{ fontSize: 'clamp(1.1rem, 4.5vw, 1.6rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '1px' }}>
+            <div
+              style={{
+                fontSize: 'clamp(1.2rem, 4.5vw, 1.75rem)',
+                fontWeight: 900,
+                color: '#ffffff',
+                letterSpacing: '2px',
+                textShadow: '0 0 14px rgba(255, 209, 59, 0.5)',
+              }}
+            >
               {drawerWord.toUpperCase()}
             </div>
           </div>
@@ -102,8 +111,8 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
             <div className="game-word-text">
               {maskedWord || '_ '.repeat(wordLength).trim()}
             </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-              {wordLength > 0 ? `${wordLength} letters` : 'Guess the word!'}
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600, marginTop: '2px' }}>
+              {wordLength > 0 ? `${wordLength} letters` : 'Guess the drawing!'}
             </div>
           </div>
         )}

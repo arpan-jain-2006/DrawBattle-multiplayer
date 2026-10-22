@@ -52,9 +52,9 @@ export const ChatBox: React.FC<ChatBoxProps> = ({
   };
 
   const getPlaceholder = () => {
-    if (phase !== 'DRAWING') return 'Type your message...';
-    if (isDrawer) return 'You are drawing! Chat with guessers...';
-    if (hasGuessed) return 'You guessed the word! Chat with winners...';
+    if (phase !== 'DRAWING') return 'Type message...';
+    if (isDrawer) return 'Chat with guessers...';
+    if (hasGuessed) return 'Chat with players...';
     return 'Type your guess here...';
   };
 
@@ -203,6 +203,7 @@ export const ChatBox: React.FC<ChatBoxProps> = ({
           maxLength={60}
           style={{
             flex: 1,
+            minWidth: 0,
             padding: '10px 14px',
             borderRadius: 'var(--radius-md)',
             background: 'var(--bg-secondary)',

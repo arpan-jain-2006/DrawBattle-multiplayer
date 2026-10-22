@@ -45,19 +45,33 @@ export const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
 
   return (
     <div className="canvas-toolbar-container">
-      {/* Top Row: Primary Tools, Sizes, and Actions */}
-      <div className="toolbar-controls-group">
-        {/* Primary Tools: Pen & Eraser */}
-        <div style={{ display: 'flex', gap: '6px' }}>
+      {/* Left Section: Active Tool + Color Preview */}
+      <div className="toolbar-section-left">
+        {/* Active Color Preview Indicator */}
+        <div
+          title={`Active Color: ${color}`}
+          style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '50%',
+            backgroundColor: color,
+            border: '2px solid #ffffff',
+            boxShadow: `0 0 8px ${color}80, inset 0 2px 4px rgba(0,0,0,0.3)`,
+            flexShrink: 0,
+          }}
+        />
+
+        {/* Tools: Pen & Eraser */}
+        <div style={{ display: 'flex', gap: '4px' }}>
           <button
             type="button"
-            title="Pen"
+            title="Pen Tool"
             onClick={() => {
               sounds.playPop();
               onToolChange('pen');
             }}
             className={tool === 'pen' ? 'btn-primary' : 'btn-secondary'}
-            style={{ padding: '6px 10px', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
+            style={{ padding: '6px 12px', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
           >
             <Pen size={16} />
             <span className="toolbar-btn-text">Draw</span>
@@ -65,110 +79,29 @@ export const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
 
           <button
             type="button"
-            title="Eraser"
+            title="Eraser Tool"
             onClick={() => {
               sounds.playPop();
               onToolChange('eraser');
             }}
             className={tool === 'eraser' ? 'btn-primary' : 'btn-secondary'}
-            style={{ padding: '6px 10px', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
+            style={{ padding: '6px 12px', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
           >
             <Eraser size={16} />
             <span className="toolbar-btn-text">Eraser</span>
           </button>
         </div>
-
-        {/* Brush Size Picker */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            background: 'var(--bg-surface)',
-            padding: '3px 6px',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--border-light)'
-          }}
-        >
-          {BRUSH_SIZES.map((b) => {
-            const isSelected = brushSize === b.size;
-            return (
-              <button
-                key={b.size}
-                type="button"
-                title={`Size ${b.label}`}
-                onClick={() => {
-                  sounds.playPop();
-                  onSizeChange(b.size);
-                }}
-                style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: isSelected ? 'var(--accent-yellow)' : 'transparent',
-                  color: isSelected ? '#1a1a1a' : 'var(--text-main)',
-                  fontWeight: 700,
-                  fontSize: '0.75rem',
-                  padding: 0,
-                }}
-              >
-                <div
-                  style={{
-                    width: `${Math.min(b.size, 16)}px`,
-                    height: `${Math.min(b.size, 16)}px`,
-                    borderRadius: '50%',
-                    background: isSelected ? '#1a1a1a' : '#ffffff',
-                  }}
-                />
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Action Tools: Undo & Clear */}
-        <div style={{ display: 'flex', gap: '6px' }}>
-          <button
-            type="button"
-            title="Undo last stroke"
-            onClick={() => {
-              sounds.playPop();
-              onUndo();
-            }}
-            className="btn-secondary"
-            style={{ padding: '6px 10px', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
-          >
-            <Undo size={16} />
-            <span className="toolbar-btn-text">Undo</span>
-          </button>
-
-          <button
-            type="button"
-            title="Clear canvas"
-            onClick={() => {
-              sounds.playPop();
-              onClear();
-            }}
-            className="btn-danger"
-            style={{ padding: '6px 10px', borderRadius: 'var(--radius-sm)', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.85rem' }}
-          >
-            <Trash2 size={15} />
-            <span className="toolbar-btn-text">Clear</span>
-          </button>
-        </div>
       </div>
 
-      {/* Bottom Row / Inline: 22-Color Palette Grid */}
-      <div className="toolbar-palette-container">
+      {/* Center Section: 22-Color Palette Grid */}
+      <div className="toolbar-section-center">
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(11, clamp(20px, 6vw, 24px))',
-            gap: 'clamp(2px, 1vw, 4px)',
+            gridTemplateColumns: 'repeat(11, clamp(18px, 2.2vw, 24px))',
+            gap: '3px',
             background: 'var(--bg-surface)',
-            padding: '5px',
+            padding: '4px 6px',
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-light)',
             touchAction: 'manipulation',
@@ -186,9 +119,9 @@ export const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
                   onColorChange(c);
                 }}
                 style={{
-                  width: 'clamp(20px, 6vw, 24px)',
-                  height: 'clamp(20px, 6vw, 24px)',
-                  borderRadius: '5px',
+                  width: 'clamp(18px, 2.2vw, 24px)',
+                  height: 'clamp(18px, 2.2vw, 24px)',
+                  borderRadius: '4px',
                   backgroundColor: c,
                   border: isSelected ? '2px solid #ffffff' : '1px solid rgba(0,0,0,0.3)',
                   boxShadow: isSelected ? '0 0 8px #ffffff' : 'none',
@@ -201,6 +134,90 @@ export const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
               />
             );
           })}
+        </div>
+      </div>
+
+      {/* Right Section: Brush Sizes & History Actions */}
+      <div className="toolbar-section-right">
+        {/* Brush Size Picker */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '3px',
+            background: 'var(--bg-surface)',
+            padding: '3px 6px',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border-light)'
+          }}
+        >
+          {BRUSH_SIZES.map((b) => {
+            const isSelected = brushSize === b.size;
+            return (
+              <button
+                key={b.size}
+                type="button"
+                title={`Brush Size ${b.label}`}
+                onClick={() => {
+                  sounds.playPop();
+                  onSizeChange(b.size);
+                }}
+                style={{
+                  width: '26px',
+                  height: '26px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: isSelected ? 'var(--accent-yellow)' : 'transparent',
+                  color: isSelected ? '#1a1a1a' : 'var(--text-main)',
+                  fontWeight: 700,
+                  fontSize: '0.75rem',
+                  padding: 0,
+                }}
+              >
+                <div
+                  style={{
+                    width: `${Math.min(b.size, 14)}px`,
+                    height: `${Math.min(b.size, 14)}px`,
+                    borderRadius: '50%',
+                    background: isSelected ? '#1a1a1a' : '#ffffff',
+                  }}
+                />
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Undo & Clear */}
+        <div style={{ display: 'flex', gap: '4px' }}>
+          <button
+            type="button"
+            title="Undo stroke"
+            onClick={() => {
+              sounds.playPop();
+              onUndo();
+            }}
+            className="btn-secondary"
+            style={{ padding: '6px 10px', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
+          >
+            <Undo size={15} />
+            <span className="toolbar-btn-text">Undo</span>
+          </button>
+
+          <button
+            type="button"
+            title="Clear canvas"
+            onClick={() => {
+              sounds.playPop();
+              onClear();
+            }}
+            className="btn-danger"
+            style={{ padding: '6px 10px', borderRadius: 'var(--radius-sm)', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.85rem' }}
+          >
+            <Trash2 size={15} />
+            <span className="toolbar-btn-text">Clear</span>
+          </button>
         </div>
       </div>
     </div>
