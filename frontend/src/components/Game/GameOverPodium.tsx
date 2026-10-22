@@ -70,18 +70,18 @@ export const GameOverPodium: React.FC<GameOverPodiumProps> = ({
         style={{
           width: '100%',
           maxWidth: '640px',
-          padding: '36px 28px',
+          padding: 'clamp(20px, 4vw, 36px) clamp(14px, 3.5vw, 28px)',
           textAlign: 'center',
           border: '3px solid var(--accent-yellow)',
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
-          <Trophy size={48} color="var(--accent-yellow)" />
+          <Trophy size={42} color="var(--accent-yellow)" />
         </div>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '6px' }}>
+        <h1 style={{ fontSize: 'clamp(1.8rem, 6vw, 2.5rem)', fontWeight: 900, marginBottom: '6px' }}>
           Game Over!
         </h1>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '24px', fontSize: '0.95rem' }}>
           Congratulations to our champion and artists!
         </p>
 
@@ -91,9 +91,9 @@ export const GameOverPodium: React.FC<GameOverPodiumProps> = ({
             display: 'flex',
             alignItems: 'flex-end',
             justifyContent: 'center',
-            gap: '16px',
-            marginBottom: '36px',
-            minHeight: '220px',
+            gap: 'clamp(6px, 2vw, 16px)',
+            marginBottom: '28px',
+            minHeight: '200px',
           }}
         >
           {/* 2nd Place */}

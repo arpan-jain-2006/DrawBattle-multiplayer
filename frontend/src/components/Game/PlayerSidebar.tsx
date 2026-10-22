@@ -31,20 +31,7 @@ export const PlayerSidebar: React.FC<PlayerSidebarProps> = ({
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '240px',
-        height: '100%',
-        minHeight: '440px',
-        background: 'var(--bg-secondary)',
-        borderRadius: 'var(--radius-lg)',
-        border: '2px solid var(--border-card)',
-        boxShadow: 'var(--shadow-lg)',
-        overflow: 'hidden',
-      }}
-    >
+    <div className="player-sidebar-container">
       {/* Sidebar Header */}
       <div
         style={{

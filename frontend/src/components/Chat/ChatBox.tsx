@@ -59,20 +59,7 @@ export const ChatBox: React.FC<ChatBoxProps> = ({
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '320px',
-        height: '100%',
-        minHeight: '440px',
-        background: 'var(--bg-secondary)',
-        borderRadius: 'var(--radius-lg)',
-        border: '2px solid var(--border-card)',
-        boxShadow: 'var(--shadow-lg)',
-        overflow: 'hidden',
-      }}
-    >
+    <div className="chat-box-container">
       {/* Chat Header */}
       <div
         style={{

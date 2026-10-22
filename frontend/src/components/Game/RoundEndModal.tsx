@@ -41,27 +41,27 @@ export const RoundEndModal: React.FC<RoundEndModalProps> = ({
         style={{
           width: '100%',
           maxWidth: '520px',
-          padding: '32px 28px',
+          padding: 'clamp(20px, 4vw, 32px) clamp(16px, 3.5vw, 28px)',
           textAlign: 'center',
           border: '3px solid var(--accent-green)',
         }}
       >
-        <div style={{ fontSize: '1rem', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 800 }}>
+        <div style={{ fontSize: '0.9rem', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 800 }}>
           {reason === 'all_guessed' ? '🎉 All Players Guessed!' : '⏰ Time\'s Up!'}
         </div>
 
-        <h3 style={{ fontSize: '1.2rem', color: 'var(--text-muted)', marginTop: '8px' }}>
+        <h3 style={{ fontSize: '1.1rem', color: 'var(--text-muted)', marginTop: '6px' }}>
           The word was:
         </h3>
 
         <div
           style={{
-            fontSize: '2.4rem',
+            fontSize: 'clamp(1.8rem, 7vw, 2.4rem)',
             fontWeight: 900,
             color: 'var(--accent-yellow)',
             textTransform: 'uppercase',
             letterSpacing: '2px',
-            margin: '8px 0 24px',
+            margin: '6px 0 20px',
           }}
         >
           {word}

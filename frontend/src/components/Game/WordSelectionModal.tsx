@@ -35,7 +35,7 @@ export const WordSelectionModal: React.FC<WordSelectionModalProps> = ({
         style={{
           width: '100%',
           maxWidth: '520px',
-          padding: '32px 28px',
+          padding: 'clamp(20px, 4vw, 32px) clamp(16px, 3.5vw, 28px)',
           textAlign: 'center',
           border: '3px solid var(--accent-yellow)',
         }}
@@ -44,7 +44,7 @@ export const WordSelectionModal: React.FC<WordSelectionModalProps> = ({
           <>
             <div
               style={{
-                fontSize: '1rem',
+                fontSize: '0.85rem',
                 textTransform: 'uppercase',
                 color: 'var(--accent-yellow)',
                 fontWeight: 800,
@@ -54,7 +54,7 @@ export const WordSelectionModal: React.FC<WordSelectionModalProps> = ({
             >
               YOUR TURN TO DRAW!
             </div>
-            <h2 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '8px' }}>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: 900, marginBottom: '6px' }}>
               Choose a Word
             </h2>
             <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>

@@ -40,10 +40,10 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '24px 16px',
+        padding: '16px 12px',
         maxWidth: '920px',
         margin: '0 auto',
-        gap: '24px',
+        gap: '16px',
         width: '100%',
       }}
     >
@@ -52,31 +52,31 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
         className="card"
         style={{
           width: '100%',
-          padding: '16px 24px',
+          padding: '14px 18px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: '16px',
+          gap: '12px',
         }}
       >
         <div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 700, letterSpacing: '1px' }}>
-            PRIVATE ROOM
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, letterSpacing: '1px' }}>
+            ROOM CODE
           </div>
-          <div style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--accent-yellow)', letterSpacing: '3px' }}>
+          <div style={{ fontSize: 'clamp(1.5rem, 6vw, 2rem)', fontWeight: 900, color: 'var(--accent-yellow)', letterSpacing: '2px' }}>
             {roomState.id}
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           <button
             type="button"
             onClick={copyInvite}
             className="btn-primary"
-            style={{ padding: '10px 18px', fontSize: '0.95rem' }}
+            style={{ padding: '8px 16px', fontSize: '0.9rem' }}
           >
-            {copied ? <Check size={18} /> : <Copy size={18} />}
+            {copied ? <Check size={16} /> : <Copy size={16} />}
             <span>{copied ? 'Link Copied!' : 'Invite Friends'}</span>
           </button>
 
@@ -85,9 +85,9 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
             onClick={onLeaveRoom}
             className="btn-secondary"
             title="Leave Lobby"
-            style={{ padding: '10px 14px' }}
+            style={{ padding: '8px 12px' }}
           >
-            <LogOut size={18} color="var(--accent-coral)" />
+            <LogOut size={16} color="var(--accent-coral)" />
           </button>
         </div>
       </div>
@@ -96,36 +96,36 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '20px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '16px',
           width: '100%',
         }}
       >
         {/* Players Roster */}
-        <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column' }}>
+        <div className="card" style={{ padding: 'clamp(16px, 3.5vw, 24px)', display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              marginBottom: '18px',
+              marginBottom: '14px',
               borderBottom: '1px solid var(--border-light)',
-              paddingBottom: '12px',
+              paddingBottom: '10px',
             }}
           >
-            <h2 style={{ fontSize: '1.3rem', fontWeight: 800 }}>
+            <h2 style={{ fontSize: '1.15rem', fontWeight: 800 }}>
               👥 Players ({roomState.players.length}/{roomState.settings.maxPlayers})
             </h2>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              {canStart ? 'Ready to play!' : 'Waiting for at least 2 players'}
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+              {canStart ? 'Ready!' : 'Need 2+ players'}
             </span>
           </div>
 
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
-              gap: '14px',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
+              gap: '10px',
               flex: 1,
             }}
           >
@@ -138,11 +138,11 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
                     background: isSelf ? 'rgba(56, 189, 248, 0.15)' : 'var(--bg-surface)',
                     border: isSelf ? '2px solid var(--accent-blue)' : '1px solid var(--border-light)',
                     borderRadius: 'var(--radius-md)',
-                    padding: '14px 10px',
+                    padding: '10px 8px',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    gap: '8px',
+                    gap: '6px',
                     position: 'relative',
                   }}
                 >

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { RoomState, Player, StrokeCommand, ChatMessage } from '../../types/game';
 import { GameHeader } from './GameHeader';
 import { PlayerSidebar } from './PlayerSidebar';
@@ -7,6 +7,7 @@ import { ChatBox } from '../Chat/ChatBox';
 import { WordSelectionModal } from './WordSelectionModal';
 import { RoundEndModal } from './RoundEndModal';
 import { GameOverPodium } from './GameOverPodium';
+import { MessageSquare, Users } from 'lucide-react';
 
 interface GameViewProps {
   roomState: RoomState;
@@ -56,21 +57,11 @@ export const GameView: React.FC<GameViewProps> = ({
   onPlayAgain,
   onLeaveRoom,
 }) => {
+  const [mobileTab, setMobileTab] = useState<'chat' | 'players'>('chat');
   const currentDrawer = roomState.players.find((p) => p.id === roomState.currentDrawerId);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh',
-        maxWidth: '1500px',
-        margin: '0 auto',
-        padding: '12px 16px',
-        gap: '12px',
-        boxSizing: 'border-box',
-      }}
-    >
+    <div className="game-viewport">
       {/* Top Header Bar */}
       <GameHeader
         roomId={roomState.id}
@@ -84,41 +75,60 @@ export const GameView: React.FC<GameViewProps> = ({
         onLeaveRoom={onLeaveRoom}
       />
 
-      {/* Main 3-Column Arena */}
-      <div
-        style={{
-          display: 'flex',
-          flex: 1,
-          gap: '12px',
-          minHeight: 0, // important for flex scrolling
-        }}
-      >
-        {/* Left Column: Player Leaderboard Sidebar */}
-        <PlayerSidebar
-          players={roomState.players}
-          currentDrawerId={roomState.currentDrawerId}
-          phase={roomState.phase}
-        />
+      {/* Main Responsive Arena */}
+      <div className="game-arena">
+        {/* Left Column on Desktop: Player Leaderboard */}
+        <div className={`arena-col-players ${mobileTab === 'players' ? 'mobile-visible' : 'mobile-hidden'}`}>
+          <PlayerSidebar
+            players={roomState.players}
+            currentDrawerId={roomState.currentDrawerId}
+            phase={roomState.phase}
+          />
+        </div>
 
-        {/* Center Column: Interactive Canvas */}
-        <DrawingCanvas
-          isDrawer={isDrawer && roomState.phase === 'DRAWING'}
-          strokeHistory={strokeHistory}
-          onEmitStroke={onEmitStroke}
-          onEmitClear={onEmitClear}
-          onEmitUndo={onEmitUndo}
-          incomingStroke={incomingStroke}
-          drawerName={currentDrawer?.name}
-        />
+        {/* Center: Interactive Canvas (Always visible) */}
+        <div className="arena-col-canvas">
+          <DrawingCanvas
+            isDrawer={isDrawer && roomState.phase === 'DRAWING'}
+            strokeHistory={strokeHistory}
+            onEmitStroke={onEmitStroke}
+            onEmitClear={onEmitClear}
+            onEmitUndo={onEmitUndo}
+            incomingStroke={incomingStroke}
+            drawerName={currentDrawer?.name}
+          />
+        </div>
 
-        {/* Right Column: Chat & Guessing Box */}
-        <ChatBox
-          messages={messages}
-          onSendMessage={onSendMessage}
-          isDrawer={isDrawer}
-          hasGuessed={currentPlayer.hasGuessed}
-          phase={roomState.phase}
-        />
+        {/* Mobile-Only Tabs Switcher (Shown between canvas and bottom content on phones) */}
+        <div className="mobile-tabs-header">
+          <button
+            type="button"
+            className={`mobile-tab-btn ${mobileTab === 'chat' ? 'active' : ''}`}
+            onClick={() => setMobileTab('chat')}
+          >
+            <MessageSquare size={16} />
+            <span>Chat & Guess</span>
+          </button>
+          <button
+            type="button"
+            className={`mobile-tab-btn ${mobileTab === 'players' ? 'active' : ''}`}
+            onClick={() => setMobileTab('players')}
+          >
+            <Users size={16} />
+            <span>Players ({roomState.players.length})</span>
+          </button>
+        </div>
+
+        {/* Right Column on Desktop: Chat & Guessing Box */}
+        <div className={`arena-col-chat ${mobileTab === 'chat' ? 'mobile-visible' : 'mobile-hidden'}`}>
+          <ChatBox
+            messages={messages}
+            onSendMessage={onSendMessage}
+            isDrawer={isDrawer}
+            hasGuessed={currentPlayer.hasGuessed}
+            phase={roomState.phase}
+          />
+        </div>
       </div>
 
       {/* Phase Modals */}

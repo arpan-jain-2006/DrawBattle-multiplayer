@@ -48,8 +48,8 @@ export const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
     ctx.lineJoin = 'round';
     ctx.strokeStyle = stroke.tool === 'eraser' ? '#ffffff' : stroke.color;
     
-    // Scale line width proportionally to canvas size
-    const scaledSize = Math.max(1, (stroke.size * width) / 800);
+    // Scale line width proportionally while ensuring readability on small mobile screens
+    const scaledSize = Math.max(2, (stroke.size * Math.max(width, 450)) / 750);
     ctx.lineWidth = scaledSize;
 
     const points = stroke.points;
@@ -113,7 +113,7 @@ export const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
     const resizeObserver = new ResizeObserver(() => {
       const rect = container.getBoundingClientRect();
       const targetWidth = Math.floor(rect.width);
-      const targetHeight = Math.max(380, Math.floor(rect.height));
+      const targetHeight = Math.floor(rect.height || Math.max(220, rect.width * 0.72));
 
       const dpr = window.devicePixelRatio || 1;
       canvas.width = Math.round(targetWidth * dpr);
@@ -211,7 +211,7 @@ export const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       ctx.strokeStyle = tool === 'eraser' ? '#ffffff' : color;
-      const scaledSize = Math.max(1, (brushSize * width) / 800);
+      const scaledSize = Math.max(2, (brushSize * Math.max(width, 450)) / 750);
       ctx.lineWidth = scaledSize;
       ctx.beginPath();
       ctx.moveTo(p1.x * width, p1.y * height);
@@ -240,20 +240,7 @@ export const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1,
-        height: '100%',
-        minHeight: '440px',
-        background: 'var(--bg-secondary)',
-        borderRadius: 'var(--radius-lg)',
-        border: '2px solid var(--border-card)',
-        boxShadow: 'var(--shadow-lg)',
-        overflow: 'hidden',
-      }}
-    >
+    <div className="drawing-canvas-wrapper">
       {/* Drawer Toolbar */}
       {isDrawer && (
         <CanvasToolbar
@@ -308,14 +295,22 @@ export const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
           onMouseUp={handleEnd}
           onMouseLeave={handleEnd}
           onTouchStart={(e) => {
+            if (e.cancelable) e.preventDefault();
             if (e.touches[0]) handleStart(e.touches[0].clientX, e.touches[0].clientY);
           }}
           onTouchMove={(e) => {
+            if (e.cancelable) e.preventDefault();
             if (e.touches[0]) handleMove(e.touches[0].clientX, e.touches[0].clientY);
           }}
-          onTouchEnd={handleEnd}
-          onTouchCancel={handleEnd}
-          style={{ display: 'block', width: '100%', height: '100%' }}
+          onTouchEnd={(e) => {
+            if (e.cancelable) e.preventDefault();
+            handleEnd();
+          }}
+          onTouchCancel={(e) => {
+            if (e.cancelable) e.preventDefault();
+            handleEnd();
+          }}
+          style={{ display: 'block', width: '100%', height: '100%', touchAction: 'none' }}
         />
       </div>
     </div>

@@ -69,18 +69,19 @@ export const HomeView: React.FC<HomeViewProps> = ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '36px 16px',
+        padding: '24px 12px',
         maxWidth: '880px',
         margin: '0 auto',
+        width: '100%',
       }}
     >
       {/* Hero Title */}
-      <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-          <Paintbrush size={38} color="var(--accent-yellow)" className="animate-bounce-slow" />
+      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+          <Paintbrush size={32} color="var(--accent-yellow)" className="animate-bounce-slow" />
           <h1
             style={{
-              fontSize: '3.4rem',
+              fontSize: 'clamp(2.2rem, 8vw, 3.4rem)',
               fontWeight: 900,
               background: 'linear-gradient(135deg, #ffd13b, #f97316)',
               WebkitBackgroundClip: 'text',
@@ -91,7 +92,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             Drawbattle
           </h1>
         </div>
-        <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginTop: '4px' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.95rem, 3vw, 1.1rem)', marginTop: '4px' }}>
           Multiplayer Drawing & Guessing Battle Arena
         </p>
       </div>
@@ -102,10 +103,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
         style={{
           width: '100%',
           maxWidth: '520px',
-          padding: '30px 24px',
+          padding: 'clamp(20px, 4vw, 30px) clamp(16px, 3.5vw, 24px)',
           display: 'flex',
           flexDirection: 'column',
-          gap: '24px',
+          gap: '20px',
         }}
       >
         {/* Avatar Customizer */}
@@ -239,8 +240,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
             style={{
               width: '100%',
               maxWidth: '480px',
-              padding: '28px',
+              padding: 'clamp(18px, 4vw, 28px)',
               border: '2px solid var(--accent-yellow)',
+              maxHeight: '88vh',
+              overflowY: 'auto',
             }}
           >
             <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '18px' }}>
