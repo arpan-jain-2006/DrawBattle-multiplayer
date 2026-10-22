@@ -1,0 +1,35 @@
+{
+  "animals": [
+    "cat", "dog", "elephant", "giraffe", "monkey", "penguin", "lion", "tiger",
+    "zebra", "kangaroo", "panda", "rabbit", "dolphin", "whale", "octopus",
+    "turtle", "snake", "crocodile", "frog", "butterfly", "owl", "parrot",
+    "shark", "horse", "cow", "sheep", "pig", "duck", "bear", "fox", "hedgehog",
+    "flamingo", "peacock", "squirrel", "camel", "crab", "jellyfish", "bee"
+  ],
+  "food": [
+    "pizza", "burger", "ice cream", "banana", "apple", "sandwich", "sushi",
+    "cookie", "chocolate", "donut", "popcorn", "taco", "hotdog", "strawberry",
+    "watermelon", "pancake", "egg", "cheese", "cake", "cupcake", "lollipop",
+    "spaghetti", "french fries", "cherry", "orange", "pineapple", "avocado"
+  ],
+  "objects": [
+    "airplane", "car", "bicycle", "guitar", "clock", "scissors", "umbrella",
+    "telescope", "camera", "chair", "table", "laptop", "telephone", "backpack",
+    "glasses", "key", "lamp", "book", "pencil", "paintbrush", "hammer",
+    "toothbrush", "candle", "balloon", "gift", "trophy", "crown", "rocket",
+    "flashlight", "compass", "anchor", "sword", "shield", "mirror", "pillow"
+  ],
+  "nature": [
+    "sun", "moon", "star", "cloud", "rainbow", "mountain", "tree", "flower",
+    "river", "volcano", "island", "ocean", "tornado", "fire", "snowflake",
+    "forest", "desert", "waterfall", "lightning", "beach", "leaf", "cave"
+  ],
+  "places": [
+    "castle", "pyramid", "house", "bridge", "hospital", "school", "circus",
+    "lighthouse", "stadium", "airport", "bank", "restaurant", "hotel", "cinema"
+  ],
+  "actions": [
+    "sleeping", "dancing", "running", "swimming", "flying", "singing", "crying",
+    "laughing", "jumping", "cooking", "reading", "painting", "fishing", "eating"
+  ]
+}
