@@ -264,14 +264,55 @@ html, body {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   gap: 12px;
-  flex-wrap: wrap;
+}
+
+.header-section-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-section-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 140px;
+}
+
+.header-section-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 @media (max-width: 768px) {
   .game-header-bar {
-    padding: 6px 10px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "left right"
+      "center center";
+    padding: 8px 10px;
     gap: 6px;
     border-radius: var(--radius-md);
+  }
+
+  .header-section-left {
+    grid-area: left;
+  }
+
+  .header-section-right {
+    grid-area: right;
+    justify-content: flex-end;
+  }
+
+  .header-section-center {
+    grid-area: center;
+    padding-top: 4px;
+    border-top: 1px solid var(--border-subtle);
+    width: 100%;
   }
 }
 
@@ -312,6 +353,30 @@ html, body {
     flex: none;
   }
 
+  .arena-col-canvas {
+    order: 1;
+    width: 100%;
+    flex: none;
+  }
+
+  .mobile-tabs-header {
+    order: 2;
+    display: flex;
+    gap: 8px;
+    margin: 2px 0;
+    width: 100%;
+  }
+
+  .arena-col-players {
+    order: 3;
+    width: 100%;
+  }
+
+  .arena-col-chat {
+    order: 3;
+    width: 100%;
+  }
+
   .arena-col-players.mobile-hidden,
   .arena-col-chat.mobile-hidden {
     display: none !important;
@@ -320,12 +385,6 @@ html, body {
   .arena-col-players.mobile-visible,
   .arena-col-chat.mobile-visible {
     display: block !important;
-    width: 100%;
-  }
-
-  .arena-col-canvas {
-    width: 100%;
-    flex: none;
   }
 }
 
@@ -335,13 +394,6 @@ html, body {
 }
 
 @media (max-width: 960px) {
-  .mobile-tabs-header {
-    display: flex;
-    gap: 8px;
-    margin-top: 4px;
-    width: 100%;
-  }
-
   .mobile-tab-btn {
     flex: 1;
     padding: 10px 14px;
@@ -363,6 +415,12 @@ html, body {
     color: #1a1a1a;
     border-color: var(--accent-yellow-hover);
     box-shadow: 0 2px 8px rgba(255, 209, 59, 0.4);
+  }
+}
+
+@media (max-width: 640px) {
+  .toolbar-btn-text {
+    display: none;
   }
 }
 

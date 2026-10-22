@@ -60,7 +60,7 @@ export const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
             style={{ padding: '6px 10px', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
           >
             <Pen size={16} />
-            <span>Draw</span>
+            <span className="toolbar-btn-text">Draw</span>
           </button>
 
           <button
@@ -74,7 +74,7 @@ export const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
             style={{ padding: '6px 10px', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
           >
             <Eraser size={16} />
-            <span>Eraser</span>
+            <span className="toolbar-btn-text">Eraser</span>
           </button>
         </div>
 
@@ -141,7 +141,7 @@ export const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
             style={{ padding: '6px 10px', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
           >
             <Undo size={16} />
-            <span style={{ display: 'inline-block' }}>Undo</span>
+            <span className="toolbar-btn-text">Undo</span>
           </button>
 
           <button
@@ -155,7 +155,7 @@ export const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
             style={{ padding: '6px 10px', borderRadius: 'var(--radius-sm)', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.85rem' }}
           >
             <Trash2 size={15} />
-            <span style={{ display: 'inline-block' }}>Clear</span>
+            <span className="toolbar-btn-text">Clear</span>
           </button>
         </div>
       </div>
@@ -165,8 +165,8 @@ export const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(11, 24px)',
-            gap: '4px',
+            gridTemplateColumns: 'repeat(11, clamp(20px, 6vw, 24px))',
+            gap: 'clamp(2px, 1vw, 4px)',
             background: 'var(--bg-surface)',
             padding: '5px',
             borderRadius: 'var(--radius-md)',
@@ -186,8 +186,8 @@ export const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
                   onColorChange(c);
                 }}
                 style={{
-                  width: '24px',
-                  height: '24px',
+                  width: 'clamp(20px, 6vw, 24px)',
+                  height: 'clamp(20px, 6vw, 24px)',
                   borderRadius: '5px',
                   backgroundColor: c,
                   border: isSelected ? '2px solid #ffffff' : '1px solid rgba(0,0,0,0.3)',

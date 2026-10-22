@@ -47,7 +47,7 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
   return (
     <div className="game-header-bar">
       {/* Left: Timer Badge & Round */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div className="header-section-left">
         <div
           className={isTimeCritical ? 'animate-glow' : ''}
           style={{
@@ -87,16 +87,7 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
       </div>
 
       {/* Center: Word Blanks / Secret Word */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flex: 1,
-          minWidth: '140px',
-        }}
-      >
+      <div className="header-section-center">
         {isDrawer && drawerWord ? (
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--accent-yellow)', letterSpacing: '1px', fontWeight: 700 }}>
@@ -119,7 +110,7 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
       </div>
 
       {/* Right: Room Code & Leave */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+      <div className="header-section-right">
         <button
           type="button"
           onClick={copyRoomLink}
