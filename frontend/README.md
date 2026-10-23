@@ -1,32 +1,62 @@
-# React + TypeScript + Vite
+# 🎨 DrawBattle — Frontend Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+The frontend client for **DrawBattle**, a real-time multiplayer drawing and guessing game built with **React 19, TypeScript, HTML5 Canvas, and Socket.IO Client**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🔗 Live Links
 
-## React Compiler
+- **🎮 Live Application (Vercel)**: [https://draw-battle-multiplayer.vercel.app](https://draw-battle-multiplayer.vercel.app)
+- **⚡ Backend WebSocket Server (Render)**: [https://drawbattle-multiplayer.onrender.com](https://drawbattle-multiplayer.onrender.com)
+- **📦 Main Repository**: [https://github.com/arpan-jain-2006/DrawBattle-multiplayer](https://github.com/arpan-jain-2006/DrawBattle-multiplayer)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## 🌟 Key Frontend Features
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+- **HTML5 Vector Canvas**: Normalized coordinates $(0.0 \to 1.0)$ with quadratic bezier smoothing and dynamic brush scaling.
+- **22-Color Palette & Tooling**: Pen, eraser, 4 brush thicknesses, instant undo stack, and clear buffer.
+- **100% Mobile & Desktop Responsive**:
+  - Balanced 3-column game arena on laptops/desktops.
+  - Sticky top-locked canvas on mobile with dedicated tabs switcher (`[💬 Chat & Guess]` and `[👥 Players]`).
+  - Native touch-drawing with pull-to-refresh prevention (`touchAction: 'none'`).
+- **Real-Time Sound Synthesizer**: Web Audio API audio cues for clicks, correct guesses, timer countdowns, and podium fanfares.
+- **Confetti Celebration & Podium**: Interactive 3-step podium with particle cannons.
+- **Customizable SVG Avatars**: Interactive avatar builder with multiple faces, colors, and accessories.
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+---
+
+## 💻 Local Development
+
+### 1. Install Dependencies
+```bash
+npm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### 2. Configure Environment Variable
+Create a `.env` file in the `frontend` directory:
+```env
+VITE_BACKEND_URL=http://localhost:3001
+```
+
+For connecting to the live production backend:
+```env
+VITE_BACKEND_URL=https://drawbattle-multiplayer.onrender.com
+```
+
+### 3. Run Dev Server
+```bash
+npm run dev
+```
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### 4. Build for Production
+```bash
+npm run build
+```
+Build output is saved to the `dist/` directory.
+
+---
+
+## 📄 License
+MIT License.

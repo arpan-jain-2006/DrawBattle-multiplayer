@@ -1,52 +1,133 @@
-# 🎨 Skribbl.io Full-Stack Clone — Multiplayer Drawing & Guessing Game
+# 🎨 DrawBattle — Real-Time Multiplayer Drawing & Guessing Game
 
-A modern, high-performance, real-time multiplayer drawing and guessing game built with **React, TypeScript, HTML5 Canvas, Node.js, Express, and Socket.IO**.
+<div align="center">
+
+![DrawBattle Banner](https://img.shields.io/badge/DrawBattle-Live%20Now-ffd13b?style=for-the-badge&logo=gamepad&logoColor=black)
+[![Frontend Live](https://img.shields.io/badge/Frontend-Vercel-black?style=for-the-badge&logo=vercel)](https://draw-battle-multiplayer.vercel.app)
+[![Backend Live](https://img.shields.io/badge/Backend-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://drawbattle-multiplayer.onrender.com)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/arpan-jain-2006/DrawBattle-multiplayer)
+
+<br/>
+
+**A fast-paced, full-stack multiplayer drawing and guessing battle arena built with React 19, TypeScript, HTML5 Canvas, Node.js, and Socket.IO.**
+
+[🎮 Play Live Demo](https://draw-battle-multiplayer.vercel.app) • [⚡ Backend Server](https://drawbattle-multiplayer.onrender.com) • [📖 Documentation](#-table-of-contents)
+
+</div>
+
+---
+
+## 🔗 Live Application Links
+
+| Service | Platform | Live URL | Status |
+| :--- | :--- | :--- | :--- |
+| **🎮 Frontend Web App** | **Vercel** | **[https://draw-battle-multiplayer.vercel.app](https://draw-battle-multiplayer.vercel.app)** | ✅ Live |
+| **⚡ Backend WebSocket Server** | **Render** | **[https://drawbattle-multiplayer.onrender.com](https://drawbattle-multiplayer.onrender.com)** | ✅ Live |
+| **📦 GitHub Repository** | **GitHub** | **[arpan-jain-2006/DrawBattle-multiplayer](https://github.com/arpan-jain-2006/DrawBattle-multiplayer)** | ✅ Public |
+
+> [!NOTE]
+> Since the backend is hosted on Render's free tier, the first request may take ~30–45 seconds if the service is waking up from idle sleep. Once active, WebSocket communication runs in real-time with sub-50ms latency.
+
+---
+
+## 📑 Table of Contents
+
+- [Live Application Links](#-live-application-links)
+- [Project Overview](#-project-overview)
+- [Key Features](#-key-features)
+- [Tech Stack](#-tech-stack)
+- [System Architecture](#-system-architecture)
+- [WebSocket API Reference](#-websocket-api-reference)
+- [Local Setup & Installation](#-local-setup--installation)
+- [Environment Variables](#-environment-variables)
+- [Deployment Guide](#-deployment-guide)
+- [How to Play](#-how-to-play)
+- [Author & License](#-author--license)
+
+---
+
+## 💡 Project Overview
+
+**DrawBattle** is a full-featured real-time multiplayer drawing and guessing game inspired by Skribbl.io. Players take turns sketching secret words on a shared vector canvas while other participants race against the clock to guess the drawing in live chat. 
+
+The application is engineered with a **server-authoritative state machine**, **normalized vector coordinate streaming**, **anti-spoiler chat protection**, and a **100% responsive dark-mode game arena** optimized for both laptops/desktops and mobile smartphones.
 
 ---
 
 ## 🌟 Key Features
 
-### 🏠 1. Room & Lobby System
-- **Create Private Rooms**: Customizable game settings:
-  - Players: 2 – 20
-  - Rounds: 2 – 10
-  - Draw time: 20 – 180 seconds
-  - Hints: 0 – 5 (or disabled)
-  - Custom words: Add custom vocabulary lists via comma separation
-- **One-Click Shareable Invite Links**: Format `?room=ROOM_CODE` auto-populates code on arrival.
-- **Interactive Lobby**: Live player roster, customizable SVG avatars, host crown, and player ready states.
-- **Host Privileges**: Only the room host can adjust settings and initiate match launch once $\ge 2$ players join.
+### 🎨 1. Real-Time HTML5 Vector Canvas
+- **Normalized Vector Coordinates (0.0 to 1.0)**: Coordinates are streamed as ratios rather than fixed pixels, guaranteeing pixel-perfect stroke synchronization regardless of device resolution, window scaling, or mobile screen sizes.
+- **Quadratic Bezier Curve Interpolation**: Smooths stroke points on the fly to eliminate jagged lines at 60 FPS.
+- **Artist Toolkit**:
+  - ✏️ Pen tool with 4 thickness levels (`Small`, `Medium`, `Large`, `Extra Large`).
+  - 🎨 Curated 22-color vibrant palette arranged in an accessible grid.
+  - 🧹 Eraser tool.
+  - ↩️ Instant Undo action stack.
+  - 🗑️ Clear Canvas buffer.
+- **Touch & Mobile Drawing**: Full pointer event handling with `touchAction: none` to prevent unintended page scroll or pull-to-refresh while drawing on phones.
 
-### 🎨 2. Real-Time HTML5 Canvas Drawing
-- **Normalized Vector Sync**: Coordinates are normalized $(0.0 \to 1.0)$, guaranteeing identical stroke rendering across screens, mobile devices, and window resizes.
-- **Fluid Bezier Curves**: Real-time quadratic bezier curve interpolation prevents jagged lines.
-- **Artist Tools**:
-  - ✏️ Pen / Brush with 4 thickness levels (Small, Medium, Large, Extra Large)
-  - 🎨 Curated 22-Color High-Contrast Palette
-  - 🧹 Eraser tool
-  - ↩️ Instant Undo stack
-  - 🗑️ Clear Canvas buffer
-- **Spectator & Reconnect Replay**: Rejoining players receive full `strokeHistory` instantly.
+### 📱 2. 100% Responsive Game Arena (Mobile & Desktop)
+- **Desktop Layout**: Balanced 3-column view featuring the Live Player Leaderboard (left), Drawing Canvas & Toolbar (center), and Real-time Guessing Chat (right).
+- **Mobile Layout (Phones & Tablets)**:
+  - Sticky top-locked Canvas keeps the active drawing in view at all times.
+  - Dedicated **Mobile Tabs Switcher** (`[💬 Chat & Guess]` and `[👥 Players]`) to seamlessly toggle between chat and leaderboard without clutter.
+  - 2-tier header preventing text collisions between word blanks, timer, and room buttons.
 
-### 💬 3. Smart Guessing & Anti-Spoil Chat
-- **Instant Answer Matching**: Server checks guess case-insensitively with instant score award.
-- **Anti-Spoil Isolation**: When a player guesses correctly, their message turns into a congratulatory green announcement. Subsequent messages from that player are hidden from active guessers, preventing spoilers.
-- **Fuzzy Spell Check**: Levenshtein distance check triggers private *"You are close!"* prompt for minor typos.
-- **Time-Decay Dynamic Scoring**:
+### 💬 3. Smart Guessing & Anti-Spoiler Chat
+- **Instant Answer Matching**: Server validates guesses case-insensitively with instant score calculation.
+- **Anti-Spoiler Isolation**: When a player guesses the word correctly, their chat message transforms into a celebratory green announcement (`[Player] guessed the word! 🎉`). Subsequent messages from winning players are hidden from players who are still guessing, preventing spoilers.
+- **Fuzzy Typo Detection**: Levenshtein distance algorithm sends a private *"You are close!"* hint if a guess is off by 1–2 letters.
+- **Dynamic Speed Bonus Scoring**:
   $$\text{Points} = \max\left(100, \text{round}\left(100 + 400 \times \frac{t_{\text{remaining}}}{t_{\text{total}}}\right) + \text{RankBonus}\right)$$
-  Drawer also receives bonus score for each player who guesses correctly.
+  The drawer also receives bonus points for every player who correctly identifies their sketch.
 
-### ⏱️ 4. Server-Authoritative Timer & Dynamic Hints
-- Server manages authoritative `setInterval` tick down, preventing client clock tampering.
-- Gradual letter unmasking schedule (e.g. `_ _ _ _ _` $\to$ `_ A _ _ _` $\to$ `_ A _ E _`) based on hint configuration.
+### 🏠 4. Lobby & Private Room Management
+- **Custom Room Codes**: 6-character unique room identifiers with instant invite link generation (`https://draw-battle-multiplayer.vercel.app?room=CODE`).
+- **Host Privileges**: Room creator can configure:
+  - Players limit (2 – 20 players)
+  - Number of rounds (2 – 10 rounds)
+  - Turn draw time (20 – 180 seconds)
+  - Progressive letter hints (0 – 5 hints)
+  - Custom words list (via comma-separated entries)
+- **Live Player Roster**: Avatar previews, ready/unready toggles, and host crown indicator.
 
-### 🏆 5. Leaderboard, Intermission & Podium
-- Live in-game sidebar leaderboard showing real-time scores, avatars, and active drawer indicators.
-- 5-second round end intermission displaying secret word and score gains.
-- End-of-game 3-step podium (1st, 2nd, 3rd) with celebratory confetti particles and "Play Again" room reset.
+### 🎭 5. Modular SVG Avatar Customizer
+- Built-in avatar generator allowing players to choose custom colors, expressions, and accessories before joining games.
 
-### 🔊 6. Synthesized Web Audio Effects
-- Web Audio API synthesizer generates pleasant pop clicks, dual-tone guess chimes, timer ticks, and victory fanfares without external audio file loading failures.
+### 🏆 6. Turn Lifecycle & 3-Step Champion Podium
+- **Word Selection Stage**: Drawer chooses from 3 randomized words with a 15-second countdown.
+- **Dynamic Letter Hint Reveals**: Timed letter unmasking (e.g. `_ _ _ _ _` $\to$ `_ A _ _ _` $\to$ `_ A _ E _`).
+- **Round Summary**: Intermission modal showing the revealed word and points gained by each player.
+- **Podium Ceremony**: 1st, 2nd, and 3rd place animated podium with celebratory confetti cannons and a "Play Again" instant room reset.
+
+### 🔊 7. Synthesized Web Audio Sound Effects
+- Custom Web Audio API synthesizer generates pop clicks, guess chimes, countdown ticks, and victory fanfares without external audio asset downloads.
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+| Technology | Description |
+| :--- | :--- |
+| **React 19** | Component-based UI framework |
+| **TypeScript** | Type-safe enterprise codebase |
+| **Vite** | Ultra-fast build tool and dev server |
+| **Socket.IO Client** | Real-time bi-directional WebSocket client |
+| **HTML5 Canvas API** | High-performance 2D vector rendering |
+| **Lucide React** | Clean, modern iconography |
+| **Canvas-Confetti** | Particle celebratory effects on podium |
+| **Vanilla CSS** | Custom design system with CSS tokens & glassmorphic dark theme |
+
+### Backend
+| Technology | Description |
+| :--- | :--- |
+| **Node.js** | Server runtime environment |
+| **Express** | HTTP web framework for health endpoints and CORS |
+| **Socket.IO** | Real-time WebSocket server engine with room isolation |
+| **TypeScript** | Strict compile-time checks |
+| **Levenshtein Distance** | Fuzzy spell-checking algorithm |
 
 ---
 
@@ -54,140 +135,168 @@ A modern, high-performance, real-time multiplayer drawing and guessing game buil
 
 ```mermaid
 graph TD
-    subgraph Client ["Frontend (React 18 + Vite + TypeScript)"]
-        UI["Lobby & Game Screen"]
-        Canvas["HTML5 Canvas (Normalized 0-1)"]
+    subgraph Client ["Frontend Client (React 19 + TypeScript + Vite)"]
+        UI["Lobby & Game Views"]
+        Canvas["HTML5 Canvas (Normalized 0.0-1.0)"]
         Avatar["Modular SVG Avatar Generator"]
-        SocketClient["Socket.IO Client Hook"]
+        SocketHook["useGameSocket Hook"]
         Audio["Web Audio Synthesizer"]
     end
 
-    subgraph Server ["Backend (Node.js + Express + Socket.IO)"]
+    subgraph Server ["Backend Server (Node.js + Socket.IO)"]
         SocketServer["Socket.IO Server Engine"]
         RoomMgr["Room & Session Manager"]
-        GameEngine["Turn State Machine"]
-        WordDict["Words DB & Fuzzy Matcher"]
+        StateMachine["Turn State Machine"]
+        WordDict["Curated Dictionary & Fuzzy Matcher"]
         TimerService["Authoritative Interval Tickers"]
     end
 
-    UI --> SocketClient
-    Canvas --> SocketClient
-    SocketClient <==>|"WebSocket Events (JSON / Stroke Packets)"| SocketServer
+    UI --> SocketHook
+    Canvas --> SocketHook
+    SocketHook <==>|"WebSocket Stream (JSON / Stroke Packets)"| SocketServer
     SocketServer --> RoomMgr
-    RoomMgr --> GameEngine
-    GameEngine --> WordDict
-    GameEngine --> TimerService
+    RoomMgr --> StateMachine
+    StateMachine --> WordDict
+    StateMachine --> TimerService
 ```
 
 ---
 
-## 🔌 WebSocket Events Reference
+## 🔌 WebSocket API Reference
 
 ### Room & Lobby Events
 | Event | Direction | Payload | Description |
 | :--- | :--- | :--- | :--- |
-| `room:create` | Client $\to$ Server | `{ player, settings }` | Creates room with unique 6-character code |
-| `room:join` | Client $\to$ Server | `{ roomId, player }` | Joins room, returns room state & stroke history |
-| `room:state` | Server $\to$ Client | `RoomState` | Full state sync on player join, leave, or update |
+| `room:create` | Client $\to$ Server | `{ player, settings }` | Creates a new private room |
+| `room:join` | Client $\to$ Server | `{ roomId, player }` | Joins existing room; synchronizes state & stroke history |
+| `room:state` | Server $\to$ Client | `RoomState` | Full state broadcast on player join, leave, or ready toggle |
 | `room:update_settings` | Client $\to$ Server | `Partial<RoomSettings>` | Host updates rounds, draw time, or hints |
-| `room:ready` | Client $\to$ Server | `boolean` | Toggles player ready status |
-| `game:start` | Client $\to$ Server | `void` | Host initiates the match |
+| `room:ready` | Client $\to$ Server | `boolean` | Toggles player ready state |
+| `game:start` | Client $\to$ Server | `void` | Host launches the match |
 
-### Drawing Stream Events
+### Real-Time Drawing Events
 | Event | Direction | Payload | Description |
 | :--- | :--- | :--- | :--- |
-| `draw:stroke` | Client $\leftrightarrow$ Server | `StrokeCommand` | Sends normalized vector points array |
-| `draw:clear` | Client $\leftrightarrow$ Server | `void` | Wipes canvas stroke history |
-| `draw:undo` | Client $\leftrightarrow$ Server | `void` | Pops last stroke from history |
+| `draw:stroke` | Client $\leftrightarrow$ Server | `StrokeCommand` | Emits normalized vector stroke points array |
+| `draw:clear` | Client $\leftrightarrow$ Server | `void` | Wipes current canvas buffer |
+| `draw:undo` | Client $\leftrightarrow$ Server | `void` | Removes the most recent stroke from history |
 
-### Chat & Gameplay Events
+### Gameplay & Chat Events
 | Event | Direction | Payload | Description |
 | :--- | :--- | :--- | :--- |
-| `game:word_selection` | Server $\to$ Client | `{ choices, timeout, isDrawer }` | 3 word options sent to drawer |
-| `game:choose_word` | Client $\to$ Server | `{ word }` | Drawer selects their chosen word |
-| `game:timer_tick` | Server $\to$ Client | `{ secondsRemaining }` | Authoritative 1-second interval |
-| `game:hint_reveal` | Server $\to$ Client | `{ maskedWord }` | Reveals unmasked hint letters |
-| `chat:send` | Client $\to$ Server | `{ text }` | Submits guess or chat message |
-| `chat:message` | Server $\to$ Client | `ChatMessage` | Broadcasts message or correct guess banner |
-| `game:round_end` | Server $\to$ Client | `{ word, roundScores, reason }` | Reveals round results |
-| `game:game_over` | Server $\to$ Client | `{ leaderboard, winner }` | Concludes match; launches podium |
-| `game:reset` | Client $\to$ Server | `void` | Resets match back to lobby |
+| `game:word_selection` | Server $\to$ Client | `{ choices, timeout, isDrawer }` | Sends 3 word choices to current drawer |
+| `game:choose_word` | Client $\to$ Server | `{ word }` | Drawer selects their target word |
+| `game:timer_tick` | Server $\to$ Client | `{ secondsRemaining }` | Authoritative 1-second countdown tick |
+| `game:hint_reveal` | Server $\to$ Client | `{ maskedWord }` | Reveals unmasked hint letters to guessers |
+| `chat:send` | Client $\to$ Server | `{ text }` | Submits a guess or chat message |
+| `chat:message` | Server $\to$ Client | `ChatMessage` | Broadcasts chat message or correct guess badge |
+| `game:round_end` | Server $\to$ Client | `{ word, roundScores, reason }` | Concludes round and reveals points |
+| `game:game_over` | Server $\to$ Client | `{ leaderboard, winner }` | Displays final scores and 3-step podium |
+| `game:reset` | Client $\to$ Server | `void` | Resets game back to lobby |
 
 ---
 
-## 💻 Code Walkthrough & Technical Details
+## 💻 Local Setup & Installation
 
-### 1. How Drawing Strokes Are Captured & Transmitted
-- In `frontend/src/components/Canvas/DrawingCanvas.tsx`, `onMouseDown` and `onTouchStart` register initial normalized coordinates $(x / \text{width}, y / \text{height})$.
-- As the artist moves their cursor/finger, points are gathered and rendered locally with zero latency.
-- Upon stroke completion (`onMouseUp` / `onTouchEnd`), a `StrokeCommand` containing the tool (`pen` / `eraser`), color, brush size, and normalized points array is emitted via `draw:stroke`.
-- Other clients receive the stroke and render it through quadratic bezier curve smoothing.
+Follow these steps to run DrawBattle on your local machine:
 
-### 2. How Game State Is Maintained
-- The server (`backend/src/models/Room.ts`) is the single source of truth.
-- A finite state machine controls the game flow:
-  $$\text{LOBBY} \longrightarrow \text{WORD\_SELECTION} \longrightarrow \text{DRAWING} \longrightarrow \text{ROUND\_END} \longrightarrow \text{GAME\_OVER}$$
-- Client disconnects, host migration, and turn skipping are handled gracefully without desync.
+### 1. Prerequisites
+- **Node.js**: v18.0.0 or higher
+- **npm**: v9.0.0 or higher
+- **Git**
 
-### 3. Turn Rotation & Scoring Calculation
-- When a game starts, player IDs are randomly shuffled into `drawerOrder`.
-- For each round, players take turns as drawer until everyone has drawn once.
-- Points awarded reward quick answers:
-  $$\text{GuesserPoints} = \text{round}\left(100 + 400 \times \frac{t_{\text{remaining}}}{t_{\text{total}}}\right) + \text{bonus}$$
-- The drawer also receives bonus points whenever guessers successfully guess their drawing.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js (v18.x, v20.x, or v22.x)
-- npm (v9.x or v10.x)
-
-### 1. Clone & Install Dependencies
+### 2. Clone the Repository
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd web3asssingment
+git clone https://github.com/arpan-jain-2006/DrawBattle-multiplayer.git
+cd DrawBattle-multiplayer
+```
 
-# Install all dependencies (root, backend, frontend)
+### 3. Install Dependencies
+```bash
+# Install root, backend, and frontend dependencies
 npm install
 npm --prefix backend install
 npm --prefix frontend install
 ```
 
-### 2. Run Locally in Development Mode
-To launch both the backend server (port 3001) and frontend client (port 5173) simultaneously:
+### 4. Configure Environment Variables
+
+**Backend (`backend/.env`):**
+```env
+PORT=3001
+FRONTEND_URL=http://localhost:5173
+```
+
+**Frontend (`frontend/.env`):**
+```env
+VITE_BACKEND_URL=http://localhost:3001
+```
+
+### 5. Run in Development Mode
+Run both backend and frontend concurrently with a single command:
 ```bash
 npm run dev
 ```
 
-- **Frontend**: [http://localhost:5173](http://localhost:5173)
-- **Backend API**: [http://localhost:3001/api/health](http://localhost:3001/api/health)
-
-### 3. Production Build
-```bash
-npm run build
-```
+- **Frontend Application**: [http://localhost:5173](http://localhost:5173)
+- **Backend Health Check**: [http://localhost:3001/api/health](http://localhost:3001/api/health)
 
 ---
 
-## 🌐 Deployment Guide
+## ⚙️ Environment Variables
 
-### Deploying Backend (Render / Railway / Fly.io)
-1. Set Environment Variables:
-   - `PORT`: `3001` (or provider assigned)
-2. Build Command: `npm install && npm run build`
-3. Start Command: `npm run start`
+### Backend Configuration
+| Variable | Description | Example |
+| :--- | :--- | :--- |
+| `PORT` | Port number for Express & Socket.IO server | `3001` |
+| `FRONTEND_URL` | Allowed CORS origin for frontend requests | `https://draw-battle-multiplayer.vercel.app` |
 
-### Deploying Frontend (Vercel / Netlify)
-1. Root Directory: `frontend`
-2. Build Command: `npm run build`
-3. Output Directory: `dist`
-4. Set Environment Variable:
-   - `VITE_BACKEND_URL`: URL of your deployed backend (e.g. `https://your-skribbl-backend.onrender.com`)
+### Frontend Configuration
+| Variable | Description | Example |
+| :--- | :--- | :--- |
+| `VITE_BACKEND_URL` | WebSocket & HTTP URL of backend server | `https://drawbattle-multiplayer.onrender.com` |
 
 ---
 
-## 📄 License
-MIT License. Built for full-stack assignment demonstration.
+## 🚀 Deployment Guide
+
+### Deploying the Backend on Render
+1. Create a **Web Service** connected to the repository.
+2. Configure settings:
+   - **Root Directory**: `backend`
+   - **Environment**: `Node`
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm run start`
+3. Add Environment Variables:
+   - `PORT`: `10000` (assigned automatically by Render)
+   - `FRONTEND_URL`: `https://draw-battle-multiplayer.vercel.app`
+
+### Deploying the Frontend on Vercel
+1. Import the Git repository into Vercel.
+2. Configure project settings:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+3. Add Environment Variable:
+   - `VITE_BACKEND_URL`: `https://drawbattle-multiplayer.onrender.com`
+4. The included [frontend/vercel.json](file:///frontend/vercel.json) handles Single Page Application (SPA) rewrites automatically.
+
+---
+
+## 🎮 How to Play
+
+1. **Join or Create a Room**: Enter your nickname, customize your avatar, and click **Create Private Room** (or enter a 6-character code to join a friend).
+2. **Invite Friends**: Copy the room link (`?room=CODE`) and share it with friends (minimum 2 players required).
+3. **Take Turns Drawing**: When it's your turn, pick 1 of 3 words and sketch it on the canvas using colors, brush sizes, and tools before time runs out.
+4. **Guess & Score**: When another player is drawing, type your guesses into the chat. The faster you guess correctly, the more points you earn!
+5. **Win the Game**: After all rounds conclude, the player with the highest total points takes the top spot on the podium!
+
+---
+
+## 👤 Author & Acknowledgments
+
+- **Author**: Arpan Jain ([@arpan-jain-2006](https://github.com/arpan-jain-2006))
+- **Live Demo**: [https://draw-battle-multiplayer.vercel.app](https://draw-battle-multiplayer.vercel.app)
+- **Backend API**: [https://drawbattle-multiplayer.onrender.com](https://drawbattle-multiplayer.onrender.com)
+- **License**: [MIT License](LICENSE) — Feel free to use, fork, and contribute!
