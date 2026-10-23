@@ -11,7 +11,7 @@ import { wordService } from '../services/WordService';
 export interface RoomEventCallbacks {
   onStateUpdate: (state: RoomState) => void;
   onWordSelection: (drawerId: string, choices: string[], timeout: number) => void;
-  onRoundStart: (drawer: Player, wordLength: number, drawTime: number, round: number, totalRounds: number) => void;
+  onRoundStart: (drawer: Player, wordLength: number, drawTime: number, round: number, totalRounds: number, word?: string) => void;
   onTimerTick: (secondsRemaining: number) => void;
   onHintReveal: (maskedWord: string) => void;
   onRoundEnd: (word: string, roundScores: Record<string, number>, reason: 'timeout' | 'all_guessed') => void;
@@ -87,10 +87,17 @@ export class Room {
 
   public removePlayer(playerId: string): void {
     const wasHost = this.hostId === playerId;
-    const wasDrawer = this.getCurrentDrawer()?.id === playerId;
+    const currentDrawer = this.getCurrentDrawer();
+    const wasDrawer = currentDrawer?.id === playerId;
 
+    const removedIndex = this.drawerOrder.indexOf(playerId);
     this.players.delete(playerId);
     this.drawerOrder = this.drawerOrder.filter(id => id !== playerId);
+
+    // If removed player was before current drawer in order, decrement index so current drawer does not shift
+    if (removedIndex !== -1 && removedIndex < this.currentDrawerIndex) {
+      this.currentDrawerIndex = Math.max(0, this.currentDrawerIndex - 1);
+    }
 
     if (this.players.size === 0) {
       this.clearTimer();
@@ -113,6 +120,8 @@ export class Room {
     if (wasDrawer && (this.phase === 'WORD_SELECTION' || this.phase === 'DRAWING')) {
       this.clearTimer();
       this.broadcastSystemChat('The drawer left the game. Skipping to next turn!');
+      // Adjust index so nextTurn() advances to the next valid drawer slot
+      this.currentDrawerIndex--;
       this.nextTurn();
       return;
     }
@@ -144,7 +153,9 @@ export class Room {
       return false;
     }
 
-    // Reset scores & order
+    this.clearTimer();
+
+    // Reset scores & order with active players only
     this.drawerOrder = Array.from(this.players.keys()).sort(() => 0.5 - Math.random());
     this.currentRound = 1;
     this.currentDrawerIndex = 0;
@@ -160,6 +171,22 @@ export class Room {
 
   private startWordSelection(): void {
     this.clearTimer();
+
+    if (this.players.size < 2) {
+      this.endGamePrematurely('Not enough players to continue.');
+      return;
+    }
+
+    this.drawerOrder = this.drawerOrder.filter(id => this.players.has(id));
+    if (this.drawerOrder.length === 0) {
+      this.endGamePrematurely('Not enough players left.');
+      return;
+    }
+
+    if (this.currentDrawerIndex >= this.drawerOrder.length || this.currentDrawerIndex < 0) {
+      this.currentDrawerIndex = 0;
+    }
+
     this.phase = 'WORD_SELECTION';
     this.strokeHistory = [];
     this.revealedIndices.clear();
@@ -183,13 +210,20 @@ export class Room {
 
     this.callbacks.onStateUpdate(this.getPublicState());
     this.callbacks.onWordSelection(drawer.id, this.wordChoices, this.secondsRemaining);
+    this.callbacks.onTimerTick(this.secondsRemaining);
 
     this.timer = setInterval(() => {
       this.secondsRemaining--;
       if (this.secondsRemaining <= 0) {
-        // Auto pick word on timeout
+        // Always safely clear before transitioning to prevent negative running intervals
+        this.clearTimer();
         const autoWord = this.wordChoices[0] || 'apple';
-        this.selectWord(drawer.id, autoWord);
+        const activeDrawer = this.getCurrentDrawer();
+        if (activeDrawer) {
+          this.selectWord(activeDrawer.id, autoWord);
+        } else {
+          this.nextTurn();
+        }
       } else {
         this.callbacks.onTimerTick(this.secondsRemaining);
       }
@@ -197,8 +231,9 @@ export class Room {
   }
 
   public selectWord(drawerId: string, word: string): void {
+    if (this.phase !== 'WORD_SELECTION') return;
     const drawer = this.getCurrentDrawer();
-    if (!drawer || drawer.id !== drawerId || this.phase !== 'WORD_SELECTION') return;
+    if (!drawer || drawer.id !== drawerId) return;
 
     this.clearTimer();
     this.currentWord = word.trim().toLowerCase();
@@ -208,9 +243,21 @@ export class Room {
   }
 
   private startDrawingRound(): void {
+    this.clearTimer();
+
+    if (this.players.size < 2) {
+      this.endGamePrematurely('Not enough players to continue.');
+      return;
+    }
+
+    const drawer = this.getCurrentDrawer();
+    if (!drawer) {
+      this.nextTurn();
+      return;
+    }
+
     this.phase = 'DRAWING';
     this.secondsRemaining = this.settings.drawTime;
-    const drawer = this.getCurrentDrawer()!;
 
     // Compute hint schedule
     this.setupHintSchedule();
@@ -221,8 +268,10 @@ export class Room {
       this.currentWord.length,
       this.settings.drawTime,
       this.currentRound,
-      this.settings.rounds
+      this.settings.rounds,
+      this.currentWord
     );
+    this.callbacks.onTimerTick(this.secondsRemaining);
 
     this.timer = setInterval(() => {
       this.secondsRemaining--;
@@ -233,6 +282,7 @@ export class Room {
       }
 
       if (this.secondsRemaining <= 0) {
+        this.clearTimer();
         this.endRound('timeout');
       } else {
         this.callbacks.onTimerTick(this.secondsRemaining);
@@ -364,6 +414,7 @@ export class Room {
   }
 
   private checkAllGuessed(): void {
+    if (this.phase !== 'DRAWING') return;
     const drawer = this.getCurrentDrawer();
     if (!drawer) return;
 
@@ -376,6 +427,8 @@ export class Room {
   }
 
   private endRound(reason: 'timeout' | 'all_guessed'): void {
+    if (this.phase !== 'DRAWING') return;
+
     this.clearTimer();
     this.phase = 'ROUND_END';
     this.secondsRemaining = 5;
@@ -387,6 +440,7 @@ export class Room {
 
     this.callbacks.onRoundEnd(this.currentWord, roundScores, reason);
     this.callbacks.onStateUpdate(this.getPublicState());
+    this.callbacks.onTimerTick(this.secondsRemaining);
 
     this.timer = setInterval(() => {
       this.secondsRemaining--;
@@ -401,6 +455,19 @@ export class Room {
 
   private nextTurn(): void {
     this.clearTimer();
+
+    if (this.players.size < 2) {
+      this.endGamePrematurely('Not enough players to continue.');
+      return;
+    }
+
+    // Retain only currently active players in drawer rotation
+    this.drawerOrder = this.drawerOrder.filter(id => this.players.has(id));
+    if (this.drawerOrder.length === 0) {
+      this.endGamePrematurely('Not enough players left.');
+      return;
+    }
+
     this.currentDrawerIndex++;
 
     // If everyone drew in this round, advance round
@@ -414,15 +481,26 @@ export class Room {
       }
     }
 
-    // Check if drawer exists
+    // Ensure index is within current drawerOrder bounds
+    if (this.currentDrawerIndex < 0 || this.currentDrawerIndex >= this.drawerOrder.length) {
+      this.currentDrawerIndex = 0;
+    }
+
+    // Validate the next drawer exists, or pick next available
     const nextDrawerId = this.drawerOrder[this.currentDrawerIndex];
     if (!nextDrawerId || !this.players.has(nextDrawerId)) {
-      if (this.drawerOrder.length > 0) {
-        this.nextTurn();
-      } else {
-        this.endGamePrematurely('Not enough players left.');
+      let foundIndex = -1;
+      for (let i = 0; i < this.drawerOrder.length; i++) {
+        if (this.players.has(this.drawerOrder[i])) {
+          foundIndex = i;
+          break;
+        }
       }
-      return;
+      if (foundIndex === -1) {
+        this.endGamePrematurely('Not enough players left.');
+        return;
+      }
+      this.currentDrawerIndex = foundIndex;
     }
 
     this.startWordSelection();
@@ -484,6 +562,9 @@ export class Room {
 
   public getCurrentDrawer(): Player | null {
     if (this.drawerOrder.length === 0) return null;
+    if (this.currentDrawerIndex < 0 || this.currentDrawerIndex >= this.drawerOrder.length) {
+      return null;
+    }
     const drawerId = this.drawerOrder[this.currentDrawerIndex];
     return this.players.get(drawerId) || null;
   }

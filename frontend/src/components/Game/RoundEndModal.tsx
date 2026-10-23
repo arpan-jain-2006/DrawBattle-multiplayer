@@ -108,7 +108,7 @@ export const RoundEndModal: React.FC<RoundEndModalProps> = ({
         </div>
 
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-          Next turn starts in <strong>{secondsRemaining}s</strong>...
+          Next turn starts in <strong>{Math.max(0, secondsRemaining)}s</strong>...
         </p>
       </div>
     </div>

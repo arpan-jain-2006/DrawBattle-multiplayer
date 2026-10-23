@@ -69,6 +69,20 @@ export function useGameSocket() {
 
     socket.on('room:state', (state: RoomState) => {
       setRoomState(state);
+      setSelectionSeconds(state.secondsRemaining);
+
+      if (state.phase === 'LOBBY') {
+        setRoundEndData(null);
+        setGameOverData(null);
+        setDrawerWord('');
+        setWordChoices([]);
+        setStrokeHistory([]);
+        setIncomingStroke(null);
+      } else if (state.phase === 'WORD_SELECTION' || state.phase === 'DRAWING') {
+        setRoundEndData(null);
+        setGameOverData(null);
+      }
+
       // Synchronize currentPlayer reference with updated room state
       if (socket.id) {
         const me = state.players.find((p) => p.id === socket.id);
@@ -77,20 +91,30 @@ export function useGameSocket() {
     });
 
     socket.on('game:word_selection', (data: { choices: string[]; timeout: number; isDrawer: boolean }) => {
+      const timeout = data.timeout || 15;
       setWordChoices(data.choices || []);
-      setSelectionSeconds(data.timeout || 15);
+      setSelectionSeconds(timeout);
+      setRoomState((prev) => (prev ? { ...prev, secondsRemaining: timeout } : null));
       setRoundEndData(null);
       setGameOverData(null);
       setStrokeHistory([]);
+      setIncomingStroke(null);
       if (!data.isDrawer) {
         setDrawerWord('');
       }
     });
 
-    socket.on('game:round_start', (data: { drawer: Player; wordLength: number; drawTime: number }) => {
+    socket.on('game:round_start', (data: { drawer: Player; wordLength: number; drawTime: number; word?: string }) => {
+      const drawTime = data.drawTime || 80;
       setStrokeHistory([]);
       setIncomingStroke(null);
       setRoundEndData(null);
+      setGameOverData(null);
+      setSelectionSeconds(drawTime);
+      setRoomState((prev) => (prev ? { ...prev, secondsRemaining: drawTime } : null));
+      if (data.word) {
+        setDrawerWord(data.word);
+      }
     });
 
     socket.on('game:timer_tick', (data: { secondsRemaining: number }) => {
@@ -104,6 +128,8 @@ export function useGameSocket() {
 
     socket.on('game:round_end', (data: { word: string; roundScores: Record<string, number>; reason: 'timeout' | 'all_guessed' }) => {
       setRoundEndData(data);
+      setRoomState((prev) => (prev ? { ...prev, secondsRemaining: 5 } : null));
+      setSelectionSeconds(5);
     });
 
     socket.on('game:game_over', (data: { leaderboard: Player[]; winner: Player }) => {

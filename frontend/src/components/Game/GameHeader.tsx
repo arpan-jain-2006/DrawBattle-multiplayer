@@ -42,7 +42,8 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const isTimeCritical = secondsRemaining <= 10 && secondsRemaining > 0;
+  const safeSeconds = Math.max(0, secondsRemaining);
+  const isTimeCritical = safeSeconds <= 10 && safeSeconds > 0;
 
   return (
     <div className="game-header-bar">
@@ -67,7 +68,7 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
           }}
         >
           <Clock size={17} />
-          <span>{secondsRemaining}s</span>
+          <span>{safeSeconds}s</span>
         </div>
 
         {/* Round Badge */}

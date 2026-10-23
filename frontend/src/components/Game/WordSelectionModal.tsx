@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { sounds } from '../../utils/soundEffects';
 
 interface WordSelectionModalProps {
@@ -16,6 +16,17 @@ export const WordSelectionModal: React.FC<WordSelectionModalProps> = ({
   secondsRemaining,
   onChooseWord,
 }) => {
+  const [selectedWord, setSelectedWord] = useState<string | null>(null);
+
+  const displaySeconds = Math.max(0, secondsRemaining);
+
+  const handleSelect = (word: string) => {
+    if (selectedWord) return;
+    setSelectedWord(word);
+    sounds.playPop();
+    onChooseWord(word);
+  };
+
   return (
     <div
       style={{
@@ -58,31 +69,35 @@ export const WordSelectionModal: React.FC<WordSelectionModalProps> = ({
               Choose a Word
             </h2>
             <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
-              Select a word before time runs out ({secondsRemaining}s)
+              Select a word before time runs out ({displaySeconds}s)
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {choices && choices.length > 0 ? (
-                choices.map((word) => (
-                  <button
-                    key={word}
-                    type="button"
-                    onClick={() => {
-                      sounds.playPop();
-                      onChooseWord(word);
-                    }}
-                    className="btn-primary"
-                    style={{
-                      padding: '16px 24px',
-                      fontSize: '1.3rem',
-                      textTransform: 'capitalize',
-                      width: '100%',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {word}
-                  </button>
-                ))
+                choices.map((word) => {
+                  const isThisSelected = selectedWord === word;
+                  return (
+                    <button
+                      key={word}
+                      type="button"
+                      disabled={Boolean(selectedWord)}
+                      onClick={() => handleSelect(word)}
+                      className="btn-primary"
+                      style={{
+                        padding: '16px 24px',
+                        fontSize: '1.3rem',
+                        textTransform: 'capitalize',
+                        width: '100%',
+                        justifyContent: 'center',
+                        opacity: selectedWord && !isThisSelected ? 0.45 : 1,
+                        transform: isThisSelected ? 'scale(1.02)' : 'none',
+                        transition: 'all 0.18s ease',
+                      }}
+                    >
+                      {isThisSelected ? `✓ ${word} (Starting...)` : word}
+                    </button>
+                  );
+                })
               ) : (
                 <div style={{ color: 'var(--text-muted)', padding: '20px', fontSize: '1.1rem' }}>
                   Loading word choices...
@@ -99,7 +114,7 @@ export const WordSelectionModal: React.FC<WordSelectionModalProps> = ({
               <span style={{ color: 'var(--accent-yellow)' }}>{drawerName}</span> is choosing a word...
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '1rem' }}>
-              Get ready to guess in <strong>{secondsRemaining}s</strong>!
+              Get ready to guess in <strong>{displaySeconds}s</strong>!
             </p>
           </div>
         )}

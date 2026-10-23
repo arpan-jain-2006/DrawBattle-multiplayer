@@ -137,7 +137,7 @@ export const GameView: React.FC<GameViewProps> = ({
           isDrawer={isDrawer}
           drawerName={currentDrawer?.name}
           choices={wordChoices}
-          secondsRemaining={selectionSeconds}
+          secondsRemaining={selectionSeconds > 0 ? selectionSeconds : (roomState.secondsRemaining || 15)}
           onChooseWord={onChooseWord}
         />
       )}
@@ -148,7 +148,7 @@ export const GameView: React.FC<GameViewProps> = ({
           roundScores={roundEndData.roundScores}
           players={roomState.players}
           reason={roundEndData.reason}
-          secondsRemaining={roomState.secondsRemaining}
+          secondsRemaining={roomState.secondsRemaining > 0 ? roomState.secondsRemaining : (selectionSeconds || 5)}
         />
       )}
 

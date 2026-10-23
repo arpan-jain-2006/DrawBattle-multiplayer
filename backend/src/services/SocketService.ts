@@ -47,13 +47,23 @@ export class SocketService {
                 }
               }
             },
-            onRoundStart: (drawer, wordLength, drawTime, round, totalRounds) => {
-              this.io.to(roomId).emit('game:round_start', {
+            onRoundStart: (drawer, wordLength, drawTime, round, totalRounds, word) => {
+              // Emit to drawer with secret word so they always know what to draw even if auto-picked
+              this.io.to(drawer.id).emit('game:round_start', {
                 drawer,
                 wordLength,
                 drawTime,
                 round,
-                totalRounds
+                totalRounds,
+                word,
+              });
+              // Emit to guessers without secret word
+              this.io.to(roomId).except(drawer.id).emit('game:round_start', {
+                drawer,
+                wordLength,
+                drawTime,
+                round,
+                totalRounds,
               });
             },
             onTimerTick: (secondsRemaining) => {
