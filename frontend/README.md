@@ -1,5 +1,15 @@
 # 🎨 DrawBattle — Frontend Client
 
+<div align="center">
+
+[![DrawBattle Live Now](https://img.shields.io/badge/DrawBattle-Live%20Now-ffd13b?style=for-the-badge&logo=gamepad&logoColor=black)](https://draw-battle-multiplayer.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://draw-battle-multiplayer.vercel.app)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/arpan-jain-2006/DrawBattle-multiplayer)
+
+</div>
+
+<br/>
+
 The frontend client for **DrawBattle**, a real-time multiplayer drawing and guessing game built with **React 19, TypeScript, HTML5 Canvas, and Socket.IO Client**.
 
 ---
