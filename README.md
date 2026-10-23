@@ -3,36 +3,31 @@
 <div align="center">
 
 ![DrawBattle Banner](https://img.shields.io/badge/DrawBattle-Live%20Now-ffd13b?style=for-the-badge&logo=gamepad&logoColor=black)
-[![Frontend Live](https://img.shields.io/badge/Frontend-Vercel-black?style=for-the-badge&logo=vercel)](https://draw-battle-multiplayer.vercel.app)
-[![Backend Live](https://img.shields.io/badge/Backend-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://drawbattle-multiplayer.onrender.com)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://draw-battle-multiplayer.vercel.app)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/arpan-jain-2006/DrawBattle-multiplayer)
 
 <br/>
 
 **A fast-paced, full-stack multiplayer drawing and guessing battle arena built with React 19, TypeScript, HTML5 Canvas, Node.js, and Socket.IO.**
 
-[🎮 Play Live Demo](https://draw-battle-multiplayer.vercel.app) • [⚡ Backend Server](https://drawbattle-multiplayer.onrender.com) • [📖 Documentation](#-table-of-contents)
+[🎮 Play Live Demo](https://draw-battle-multiplayer.vercel.app) • [📦 GitHub Repository](https://github.com/arpan-jain-2006/DrawBattle-multiplayer) • [📖 Documentation](#-table-of-contents)
 
 </div>
 
 ---
 
-## 🔗 Live Application Links
+## 🔗 Live Application Link
 
 | Service | Platform | Live URL | Status |
 | :--- | :--- | :--- | :--- |
-| **🎮 Frontend Web App** | **Vercel** | **[https://draw-battle-multiplayer.vercel.app](https://draw-battle-multiplayer.vercel.app)** | ✅ Live |
-| **⚡ Backend WebSocket Server** | **Render** | **[https://drawbattle-multiplayer.onrender.com](https://drawbattle-multiplayer.onrender.com)** | ✅ Live |
+| **🎮 Live Game App** | **Vercel** | **[https://draw-battle-multiplayer.vercel.app](https://draw-battle-multiplayer.vercel.app)** | ✅ Live |
 | **📦 GitHub Repository** | **GitHub** | **[arpan-jain-2006/DrawBattle-multiplayer](https://github.com/arpan-jain-2006/DrawBattle-multiplayer)** | ✅ Public |
-
-> [!NOTE]
-> Since the backend is hosted on Render's free tier, the first request may take ~30–45 seconds if the service is waking up from idle sleep. Once active, WebSocket communication runs in real-time with sub-50ms latency.
 
 ---
 
 ## 📑 Table of Contents
 
-- [Live Application Links](#-live-application-links)
+- [Live Application Link](#-live-application-link)
 - [Project Overview](#-project-overview)
 - [Key Features](#-key-features)
 - [Tech Stack](#-tech-stack)
@@ -40,7 +35,6 @@
 - [WebSocket API Reference](#-websocket-api-reference)
 - [Local Setup & Installation](#-local-setup--installation)
 - [Environment Variables](#-environment-variables)
-- [Deployment Guide](#-deployment-guide)
 - [How to Play](#-how-to-play)
 - [Author & License](#-author--license)
 
@@ -249,38 +243,12 @@ npm run dev
 | Variable | Description | Example |
 | :--- | :--- | :--- |
 | `PORT` | Port number for Express & Socket.IO server | `3001` |
-| `FRONTEND_URL` | Allowed CORS origin for frontend requests | `https://draw-battle-multiplayer.vercel.app` |
+| `FRONTEND_URL` | Allowed CORS origin for frontend requests | `http://localhost:5173` |
 
 ### Frontend Configuration
 | Variable | Description | Example |
 | :--- | :--- | :--- |
-| `VITE_BACKEND_URL` | WebSocket & HTTP URL of backend server | `https://drawbattle-multiplayer.onrender.com` |
-
----
-
-## 🚀 Deployment Guide
-
-### Deploying the Backend on Render
-1. Create a **Web Service** connected to the repository.
-2. Configure settings:
-   - **Root Directory**: `backend`
-   - **Environment**: `Node`
-   - **Build Command**: `npm install && npm run build`
-   - **Start Command**: `npm run start`
-3. Add Environment Variables:
-   - `PORT`: `10000` (assigned automatically by Render)
-   - `FRONTEND_URL`: `https://draw-battle-multiplayer.vercel.app`
-
-### Deploying the Frontend on Vercel
-1. Import the Git repository into Vercel.
-2. Configure project settings:
-   - **Framework Preset**: `Vite`
-   - **Root Directory**: `frontend`
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-3. Add Environment Variable:
-   - `VITE_BACKEND_URL`: `https://drawbattle-multiplayer.onrender.com`
-4. The included [frontend/vercel.json](file:///frontend/vercel.json) handles Single Page Application (SPA) rewrites automatically.
+| `VITE_BACKEND_URL` | WebSocket & HTTP URL of backend server | `http://localhost:3001` |
 
 ---
 
@@ -297,6 +265,5 @@ npm run dev
 ## 👤 Author & Acknowledgments
 
 - **Author**: Arpan Jain ([@arpan-jain-2006](https://github.com/arpan-jain-2006))
-- **Live Demo**: [https://draw-battle-multiplayer.vercel.app](https://draw-battle-multiplayer.vercel.app)
-- **Backend API**: [https://drawbattle-multiplayer.onrender.com](https://drawbattle-multiplayer.onrender.com)
+- **Live Game App**: [https://draw-battle-multiplayer.vercel.app](https://draw-battle-multiplayer.vercel.app)
 - **License**: [MIT License](LICENSE) — Feel free to use, fork, and contribute!

@@ -4,10 +4,9 @@ The frontend client for **DrawBattle**, a real-time multiplayer drawing and gues
 
 ---
 
-## 🔗 Live Links
+## 🔗 Live Link
 
 - **🎮 Live Application (Vercel)**: [https://draw-battle-multiplayer.vercel.app](https://draw-battle-multiplayer.vercel.app)
-- **⚡ Backend WebSocket Server (Render)**: [https://drawbattle-multiplayer.onrender.com](https://drawbattle-multiplayer.onrender.com)
 - **📦 Main Repository**: [https://github.com/arpan-jain-2006/DrawBattle-multiplayer](https://github.com/arpan-jain-2006/DrawBattle-multiplayer)
 
 ---
@@ -37,11 +36,6 @@ npm install
 Create a `.env` file in the `frontend` directory:
 ```env
 VITE_BACKEND_URL=http://localhost:3001
-```
-
-For connecting to the live production backend:
-```env
-VITE_BACKEND_URL=https://drawbattle-multiplayer.onrender.com
 ```
 
 ### 3. Run Dev Server
